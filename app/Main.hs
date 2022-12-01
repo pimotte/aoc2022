@@ -1,8 +1,7 @@
 module Main where
 
-import qualified MyLib (someFunc)
+import Day1
 
 main :: IO ()
 main = do
-  putStrLn "Hello, Haskell!"
-  MyLib.someFunc
+  day1part2 (readFile "./day1/2.in")
