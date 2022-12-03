@@ -22,6 +22,7 @@ library
     exposed-modules:  MyLib
                     , Day1
                     , Day2
+                    , Day3
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -30,6 +31,7 @@ library
     -- other-extensions:
     build-depends:    base ^>=4.16.3.0
                     , trifecta
+                    , containers
     hs-source-dirs:   src
     default-language: Haskell2010
 

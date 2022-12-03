@@ -2,7 +2,8 @@ module Main where
 
 import Day1
 import Day2
+import Day3
 
 main :: IO ()
 main = do
-  day2part2 (readFile "./input/day2_2.in")
+  day3part2 (readFile "./input/day3_2.in")
