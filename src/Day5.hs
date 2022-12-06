@@ -19,7 +19,7 @@ data Move = Move
 parseCrates :: [String] -> Int -> CrateArrangement
 parseCrates contents numCrates = 
     let parseLine numCrates line = fmap (\d -> line !! (1 + 4*(d-1))) [1..numCrates]
-    in fromList (zip [1..numCrates] (transpose (fmap (parseLine numCrates) contents)))
+    in fromList (zip [1..numCrates] (fmap (dropWhile (== ' ')) (transpose (fmap (parseLine numCrates) contents))))
 
 move :: Parser Move
 move = do
@@ -56,6 +56,12 @@ executeMove move crates =
         _ -> executeMove (Move (amount move - 1) (from move) (to move)) (executeSingleMove crates move) 
 
 
+executeMove2 :: Move -> CrateArrangement -> CrateArrangement
+executeMove2 move crates = 
+    let Just fromPile = Data.Map.lookup (from move) crates
+        Just toPile = Data.Map.lookup (to move) crates
+       in insert (to move) (take (fromIntegral $ amount move) fromPile ++ toPile) (insert (from move) (drop (fromIntegral $ amount move) fromPile) crates)
+
 message :: CrateArrangement -> Int -> Maybe [Crate]
 message crates numCrates = sequence (fmap (\i -> head <$> Data.Map.lookup i crates) [1..numCrates])
 
@@ -65,9 +71,20 @@ solve contents numCrates =
       in do
         print $ message (foldr executeMove crates (reverse moves)) numCrates
 
+solve2 :: String -> Int -> IO ()
+solve2 contents numCrates = 
+    let (crates, moves) = parse contents numCrates
+      in do
+        print $ message (foldr executeMove2 crates (reverse moves)) numCrates
 
 day5part1 :: IO String -> IO ()
 day5part1 input = do
     contents <- input
     let numCrates = (length (head (lines contents)) + 1) `div` 4
         in solve contents numCrates
+
+day5part2 :: IO String -> IO ()
+day5part2 input = do
+    contents <- input
+    let numCrates = (length (head (lines contents)) + 1) `div` 4
+        in solve2 contents numCrates
