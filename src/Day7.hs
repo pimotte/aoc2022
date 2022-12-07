@@ -5,6 +5,7 @@ import Text.Trifecta.Parser
 import Text.Trifecta.Combinators
 import Control.Applicative
 import Data.Tree
+import Debug.Trace
 
 data File = File {
     name :: String,
@@ -62,11 +63,9 @@ parseInput str =
 replaceInTree :: [String] -> [File] -> Tree File -> Tree File
 replaceInTree [] files tree = Node (rootLabel tree) (fmap newSubtree files) where
     newSubtree file = Node file []
-replaceInTree [dir] files tree = Node (rootLabel tree) (if dir == name (rootLabel tree) then fmap newSubtree files else []) where
+replaceInTree [dir] files tree = trace (if "dir" == "a" then "Yesn\n\n" else "") Node (rootLabel tree) (if dir == name (rootLabel tree) then fmap newSubtree files else []) where
     newSubtree file = Node file []
-replaceInTree (dir:dirs) files tree = 
-    Node (rootLabel tree) (fmap maybeTransform (subForest tree)) where
-        maybeTransform subTree = replaceInTree dirs files subTree 
+replaceInTree (dir:dirs) files tree = trace (if "dir" == "a" then "Yesn\n\n" else "") Node (rootLabel tree) (fmap (replaceInTree dirs files) (subForest tree)) 
 
                                             
 
@@ -78,7 +77,7 @@ commandsToTree commands = go ["/"] commands (Node (File "/" 0) []) where
                                         ".." -> go (tail curDir) cs tree
                                         "/" -> go ["/"] cs tree
                                         s -> go (s:curDir) cs tree
-                                go curDir ((Ls files):cs) tree = go curDir cs (replaceInTree (reverse curDir) files tree)
+                                go curDir ((Ls files):cs) tree = trace ("Exec ls in" ++ show curDir ++ "files: " ++ show files ++ "tree: " ++ show tree) (go curDir cs (replaceInTree (reverse curDir) files tree))
             
 
 
