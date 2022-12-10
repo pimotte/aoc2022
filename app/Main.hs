@@ -10,4 +10,4 @@ import Day7
 
 main :: IO ()
 main = do
-  day7part1 (readFile "./input/day7_1.in")
+  day7part2 (readFile "./input/day7_2.in")
