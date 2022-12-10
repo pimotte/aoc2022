@@ -29,6 +29,7 @@ library
                     , Day7
                     , Day8
                     , Day9
+                    , Day10
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -38,6 +39,7 @@ library
     build-depends:    base ^>=4.16.3.0
                     , trifecta
                     , containers
+                    , split
     hs-source-dirs:   src
     default-language: Haskell2010
 
