@@ -76,8 +76,8 @@ value item (Constant i) = i
 value item Var = item
 
 worry :: Item -> Operation -> Integer
-worry item (Add atom1 atom2) = ((value item atom1) + (value item atom2)) `div` 3
-worry item (Mul atom1 atom2) = (value item atom1) * (value item atom2) `div` 3
+worry item (Add atom1 atom2) = ((value item atom1) + (value item atom2)) `mod` (2*3*19*17*13*7*5*11*23)
+worry item (Mul atom1 atom2) = (value item atom1) * (value item atom2) `mod` (2*3*19*17*13*7*5*11*23)
 
 testNewWorry :: Integer -> Test -> Integer
 testNewWorry worry (Test divider monkeyTrue monkeyFalse) = if worry `mod` divider == 0 then monkeyTrue else monkeyFalse
@@ -108,6 +108,9 @@ simulateRound monkeys =
 monkeyItems :: Map Integer Monkey -> [String]
 monkeyItems monkeys = fmap (\m -> "Monkey " ++ (show (index m)) ++ " : " ++ (show (carrying m))) (elems monkeys)
 
+monkeyInspections :: Map Integer Monkey -> [String]
+monkeyInspections monkeys = fmap (\m -> "Monkey " ++ (show (index m)) ++ " : " ++ (show (inspections m))) (elems monkeys)
+
 optimisticParse :: String -> [Monkey]
 optimisticParse contents = s where (Success s) = (parseString (many monkey) mempty contents)
 
@@ -119,7 +122,9 @@ day11part1 input = do
     print $ parseString (many monkey) mempty contents
     -- let monkeyMap = fromList (fmap (\m -> (index m, m)) (optimisticParse contents))
     --    in mapM_ putStrLn (monkeyItems (simulateRound (monkeyMap)))
+    -- let monkeyMap = fromList (fmap (\m -> (index m, m)) (optimisticParse contents))
+    --    in mapM_ putStrLn (monkeyItems (simulateRounds (monkeyMap) 20))
     let monkeyMap = fromList (fmap (\m -> (index m, m)) (optimisticParse contents))
-       in mapM_ putStrLn (monkeyItems (simulateRounds (monkeyMap) 20))
+        in mapM_ putStrLn (monkeyInspections (simulateRounds (monkeyMap) 10000))
     let monkeyMap = fromList (fmap (\m -> (index m, m)) (optimisticParse contents))
-       in print $ product (take 2 (reverse (sort (fmap (\m -> inspections m) (elems (simulateRounds (monkeyMap) 20))))))
+       in print $ product (take 2 (reverse (sort (fmap (\m -> inspections m) (elems (simulateRounds (monkeyMap) 10000))))))
