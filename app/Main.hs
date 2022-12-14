@@ -12,7 +12,9 @@ import Day9
 import Day10
 import Day11
 import Day12
+import Day13
+import Day14
 
 main :: IO ()
 main = do
-  day12part2 (readFile "./input/day12_2.in")
+  day14part2 (readFile "./input/day14_2.in")
