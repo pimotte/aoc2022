@@ -15,6 +15,7 @@ import Day12
 import Day13
 import Day14
 import Day15
+import Day16
 main :: IO ()
 main = do
-  day15part2 (readFile "./input/day15_2.in")
+  day16part1 (readFile "./input/day16_2.in")
